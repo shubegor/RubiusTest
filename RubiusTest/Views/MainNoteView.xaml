@@ -1,0 +1,100 @@
+﻿<UserControl x:Class="RubiusTest.Views.MainNoteView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns:tools="clr-namespace:Ascon.Pilot.Theme.Tools;assembly=Ascon.Pilot.Theme"
+             xmlns:theme="clr-namespace:Ascon.Pilot.Theme;assembly=Ascon.Pilot.Theme"
+             xmlns:Control="clr-namespace:Ascon.Pilot.Theme.Controls;assembly=Ascon.Pilot.Theme"
+             xmlns:vm="clr-namespace:RubiusTest.ViewModels"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance {x:Type vm:MainNoteViewModel}}"
+            
+             d:DesignHeight="600" d:DesignWidth="920" >
+    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <tools:SharedResourceDictionary Source="/Ascon.Pilot.Theme;component/Themes/sharedresources/sharedresources.xaml"/>
+                <tools:SharedResourceDictionary Source="/Ascon.Pilot.Theme;component/Themes/standardcontrols/textblock.xaml"/>
+                <tools:SharedResourceDictionary Source="/Ascon.Pilot.Theme;component/Themes/standardcontrols/togglebutton.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="Button">
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="Padding" Value="15 0"/>
+            </Style>
+           
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+
+    
+        <Grid>
+            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                 <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Margin="10" Text="Плагин заметок" Style="{StaticResource {theme:StyleKey DialogTitleStyle}}"/>
+
+            <StackPanel Grid.Row="1" Orientation="Horizontal" >
+                <Button Content="Create" Command="{Binding CreateNoteCommand}" />
+                <Button Content="Delete" Command="{Binding RemoveNoteCommand}" />
+                <Button Content="Edit" Command="{Binding EditNoteCommand}" />
+                <Button Content="Open" Command="{Binding OpenNoteCommand}" />
+
+            </StackPanel>
+
+            <telerik:RadGridView x:Name="GridView"   
+                     ItemsSource="{Binding NotesList}"
+                     SelectedItem ="{Binding SelectedNote, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     RowIndicatorVisibility="Collapsed"
+                     AutoGenerateColumns="False"
+                     Grid.Row="2"
+                     
+                     IsReadOnly="True"
+                     RowHeight="50"
+                     FontSize="16"
+                     CanUserResizeColumns ="False"
+                     telerik:StyleManager.Theme="Windows8"  
+                     >
+
+            <telerik:RadGridView.InputBindings >
+                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding EditNoteCommand}" MouseAction="LeftDoubleClick"/>
+            </telerik:RadGridView.InputBindings>
+            <telerik:RadGridView.Columns>
+                    
+                    <telerik:GridViewDataColumn 
+                                        Header="Тема" 
+                                        DataMemberBinding="{Binding Topic, Mode = OneWay, UpdateSourceTrigger=PropertyChanged }"
+                                        />
+                    <telerik:GridViewDataColumn Header="Заметка" Width ="*" TextWrapping="Wrap"
+                                        DataMemberBinding="{Binding ContentShort, Mode = OneWay,UpdateSourceTrigger=PropertyChanged }" />
+                    <telerik:GridViewDataColumn Header="Дата создания"  DataFormatString="{} {0:dd.MM.yyyy}" 
+                                        DataMemberBinding="{Binding CreationDate, Mode = OneWay,UpdateSourceTrigger=PropertyChanged  }" />
+                    <telerik:GridViewDataColumn Header="Дата изменения"  DataFormatString="{} {0:dd.MM.yyyy}"  
+                                        DataMemberBinding="{Binding LastEditDate, Mode = OneWay,UpdateSourceTrigger=PropertyChanged }"   />
+                    <telerik:GridViewDataColumn Header="Автор"
+                                                    DataMemberBinding="{Binding Author.ActualName, Mode = OneWay,UpdateSourceTrigger=PropertyChanged }" />
+
+                </telerik:RadGridView.Columns>
+            </telerik:RadGridView>
+            
+            
+            <telerik:RadDataPager PageSize="10" HorizontalAlignment="Center"
+                      Grid.Row="3" FontSize="12" Margin="10" 
+                      Source="{Binding Items, ElementName=GridView}"
+                      DisplayMode="FirstLastPreviousNextNumeric" 
+                      telerik:StyleManager.Theme="Windows8"/>
+        
+             
+    </Grid>
+
+</UserControl>

@@ -1,0 +1,61 @@
+﻿<telerik:RadWindow x:Class="RubiusTest.Views.NoteViewerView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+	xmlns:local="clr-namespace:RubiusTest"
+	xmlns:tools="clr-namespace:Ascon.Pilot.Theme.Tools;assembly=Ascon.Pilot.Theme"
+    xmlns:theme="clr-namespace:Ascon.Pilot.Theme;assembly=Ascon.Pilot.Theme"
+	xmlns:vm="clr-namespace:RubiusTest.ViewModels"
+	mc:Ignorable="d" Width="440" Height="Auto"
+	Header="{Binding Note.Topic}"
+	WindowStartupLocation="CenterOwner"
+    telerik:StyleManager.Theme="Windows8" 
+    d:DataContext="{d:DesignInstance {x:Type vm:NoteViewerViewModel}}">
+
+    <telerik:RadWindow.Resources>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <tools:SharedResourceDictionary Source="/Ascon.Pilot.Theme;component/Themes/sharedresources/sharedresources.xaml"/>
+                <tools:SharedResourceDictionary Source="/Ascon.Pilot.Theme;component/Themes/standardcontrols/textblock.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="TextBlock" BasedOn="{StaticResource {theme:StyleKey DialogTextBlockStyle}}">
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Margin" Value="5" />
+            </Style>
+
+            <Style TargetType="TextBox">
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Height" Value ="Auto"  />
+                <Setter Property="Margin" Value ="5"  />
+            </Style>
+        </ResourceDictionary>
+    </telerik:RadWindow.Resources>
+
+
+
+    <Grid Margin="10" Background="White" DataContext="{Binding Note}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+
+        <TextBox Text="{Binding Content}" Grid.Row="0"
+                     TextWrapping="Wrap"
+                     AcceptsReturn="True" 
+                     VerticalScrollBarVisibility="Visible"
+                     MaxHeight="200" 
+                     IsReadOnly="True"/>
+        <TextBlock Text="{Binding CreationDate, StringFormat = Дата создания: {0}}"  Grid.Row="1" Grid.Column="1" />
+        <TextBlock Text="{Binding Author.ActualName, StringFormat = Автор: {0}}" Grid.Row="2" Grid.Column="1" />
+
+    </Grid>
+
+
+</telerik:RadWindow>
